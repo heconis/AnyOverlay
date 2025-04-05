@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設定</title>
+    <style>
+        body {
+            height: 40px;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 5px 0 20px;
+            background-color: #1f1f1f;
+            border-bottom: 2px solid #444;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .close-button {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: inherit;
+        }
+        .container {
+            padding: 20px;
+        }
+        .label {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 75%;
+            padding: 10px;
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .apply-button {
+            padding: 10px;
+            background-color: #6200ea;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .apply-button:hover {
+            background-color: #3700b3;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body class="drag-disabled">
+    <header>
+        <h1>設定</h1>
+        <button class="close-button" onclick="close_window()">✕</button>
+    </header>
+  
+    <div class="container">
+        <!-- 表示URL -->
+        <div class="label">
+            <label for="url">表示URL</label>
+            <div style="display: flex; align-items: center;">
+                <input type="checkbox" id="use-local" />
+                <label for="use-local" style="font-size: 16px;">ローカルファイル</label>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="url" placeholder="URLを入力" />
+            <button class="apply-button" id="apply-button" onclick="handleApply()">適用</button>
+        </div>
+
+        <label for="opacity">透過度: <span id="opacity-value"></span></label>
+        <input type="range" id="opacity" min="0" max="100" step="10">
+
+        <div style="margin-top: 10px;">
+            <input type="checkbox" id="ignore-mouse">
+            <label for="ignore-mouse">マウス操作を無視する</label>
+        </div>
+    </div>
+
+  <!-- ファイル選択用input -->
+  <input type="file" id="file-input" style="display:none" />
+
+  <script>
+        try {
+            let is_running = false;
+            const opacitySlider = document.getElementById('opacity');
+            const opacityValue = document.getElementById('opacity-value');
+            opacityValue.textContent = opacitySlider.value;
+
+            opacitySlider.addEventListener('input', function() {
+                opacityValue.textContent = opacitySlider.value;
+                if (!is_running) {
+                    is_running = true;
+                    pywebview.api.change_transarent(Number(opacitySlider.value)).then(function(result) {
+                        is_running = result;
+                    });
+                }
+            });
+
+            let url;
+            function applyUrl() {
+                url = document.getElementById('url').value;
+                pywebview.api.save(url);
+            }
+
+            const useLocalCheckbox = document.getElementById('use-local');
+            const applyButton = document.getElementById('apply-button');
+            const fileInput = document.getElementById('file-input');
+
+            // チェックボックスによってボタンのラベル変更
+            useLocalCheckbox.addEventListener('change', () => {
+                applyButton.textContent = useLocalCheckbox.checked ? '参照' : '適用';
+            });
+
+            function handleApply() {
+                if (useLocalCheckbox.checked) {
+                    pywebview.api.file_select().then(function(result) {
+                        url = result;
+                        document.getElementById('url').value = url;
+                        pywebview.api.save(url);
+                    });
+                } else {
+                    applyUrl();
+                }
+            }
+
+            const setMouseThrough = document.getElementById('ignore-mouse');
+            let flg = setMouseThrough.checked;
+            setMouseThrough.addEventListener('change', () => {
+                flg = setMouseThrough.checked ? true : false;
+            });
+
+            function close_window() {
+                pywebview.api.change_mouse_through(flg);
+                pywebview.api.close();
+            }
+        } catch (error) {
+      console.error('エラー:', error);
+        }
+  </script>
+</body>
+</html>
