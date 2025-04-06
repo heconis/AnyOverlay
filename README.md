@@ -2,6 +2,7 @@
 任意のwebページ、htmlファイルをオーバーレイで表示するやつ
 
 初回起動時、設定画面が表示されます。
+
 ![スクリーンショット 2025-04-06 154653](https://github.com/user-attachments/assets/00f80d6d-0e11-4e6e-a9d0-7a8bc24b73ea)
 
 
@@ -20,4 +21,5 @@
 
 ![スクリーンショット 2025-04-06 154757](https://github.com/user-attachments/assets/3b5dcd14-7de7-485b-8a3e-3460253494ed)
 ![スクリーンショット 2025-04-06 154803](https://github.com/user-attachments/assets/f5809255-bf20-4a14-b41d-d91b241639c0)
+
 タスクトレイにアイコンが追加され、右クリックで設定ウィンドウ表示 or 終了が可能です。
