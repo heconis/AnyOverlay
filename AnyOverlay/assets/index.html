@@ -158,6 +158,7 @@
             });
 
             function close_window() {
+                flg = setMouseThrough.checked;
                 pywebview.api.change_mouse_through(flg);
                 pywebview.api.close();
             }
