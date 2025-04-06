@@ -23,3 +23,5 @@
 ![スクリーンショット 2025-04-06 154803](https://github.com/user-attachments/assets/f5809255-bf20-4a14-b41d-d91b241639c0)
 
 タスクトレイにアイコンが追加され、右クリックで設定ウィンドウ表示 or 終了が可能です。
+
+動作が不安定な場合、「%localappdata%\AnyOverlay」のsettings.jsonを削除することで初期化できます。
