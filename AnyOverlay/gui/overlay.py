@@ -1,3 +1,4 @@
+import os
 import time
 import webview
 
@@ -122,7 +123,7 @@ class Overlay:
     # 設定ウィンドウを表示
     def view_setting(self):
         self.is_setting_open = True
-        with open('assets/index.html', 'r', encoding='utf-8') as file:
+        with open(os.path.join(os.path.dirname(__file__), '../assets/index.html'), 'r', encoding='utf-8') as file:
             api = Api(self)
             self.setting_window = webview.create_window(
                 title='Settings',

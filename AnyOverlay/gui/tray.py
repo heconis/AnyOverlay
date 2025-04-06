@@ -1,3 +1,4 @@
+import os
 import threading
 import pystray
 from pystray import MenuItem as item
@@ -18,7 +19,7 @@ class TaskTray(threading.Thread):
 
     # タスクトレイのメニュー作成
     def setup_tray(self):
-        icon = pystray.Icon('icon', Image.open('assets/icon.ico'), menu=(
+        icon = pystray.Icon('icon', Image.open(os.path.join(os.path.dirname(__file__), '../assets/icon.ico')), menu=(
             item('設定', self.on_setting, default=True),
             item('終了', self.on_quit)
         ))
